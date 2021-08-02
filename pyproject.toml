@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "draft"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.68.0"
+uvicorn = "^0.15.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.7b0"
+
+[tool.poetry.scripts]
+dev_start = "scripts:dev_start"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
