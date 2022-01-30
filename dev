@@ -1,0 +1,20 @@
+_local() {
+    poetry run uvicorn dragndroppings.main:app --reload
+}
+
+_dc() {
+    echo $@
+    docker-compose up $@
+}
+
+case $1 in
+local)
+    _local
+    ;;
+
+dc)
+    shift
+    _dc $@
+    ;;
+
+esac
