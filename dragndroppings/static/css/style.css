@@ -3,6 +3,10 @@
     min-width: 5em;
 }
 
+.bank {
+    min-height: 10em;
+}
+
 img {
     max-height: 150px;
 }
