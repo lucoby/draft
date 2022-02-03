@@ -1,0 +1,8 @@
+.title {
+    min-height: 10em;
+    min-width: 5em;
+}
+
+img {
+    max-height: 150px;
+}
