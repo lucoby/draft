@@ -17,7 +17,7 @@ function drop(ev) {
     target.appendChild(document.getElementById(data));
 }
 
-document.querySelectorAll(".list, .bank").forEach(function (list) {
+document.querySelectorAll(".group-items, .item-bank").forEach(function (list) {
     list.setAttribute("ondrop", "drop(event)");
     list.setAttribute("ondragover", "allowDrop(event)");
 })

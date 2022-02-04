@@ -1,4 +1,4 @@
-.title {
+.group-title {
     min-height: 10em;
     max-width: 12em;
     min-width: 12em;
@@ -7,7 +7,7 @@
     text-overflow: ellipsis;
 }
 
-.bank {
+.item-bank {
     min-height: 10em;
 }
 
@@ -24,11 +24,11 @@ img {
     max-height: 150px;
 }
 
-.group-text {
+.group-title-text {
     font-size: large;
 }
 
-.group-text, .item-text {
+.group-title-text, .item-text {
     overflow: hidden;
     text-overflow: ellipsis;
     padding-bottom: .25rem;
