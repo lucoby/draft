@@ -1,3 +1,56 @@
+let state = {
+    "groups": [
+        {
+            "name": "Yang",
+            "items": []
+        },
+        {
+            "name": "Song",
+            "items": []
+        },
+        {
+            "name": "Simon",
+            "items": []
+        },
+        {
+            "name": "Loach",
+            "items": []
+        },
+    ],
+    "bank": [
+        {
+            "name": "Pak"
+        },
+        {
+            "name": "Evins"
+        },
+        {
+            "name": "Mueller"
+        },
+    ]
+};
+
+const itemTemplate = item => `<div id="${item.name}" class="item">
+<div class="item-text">${item.name}</div>
+</div>`;
+
+const groupTemplate = group => `<div id=${group.name} class="group">
+<div class="group-title">
+    <div class="group-title-name">${group.name}</div>
+</div>
+<div class="group-items">${group.items.map(item => itemTemplate(item)).join('')}</div>
+</div>`;
+
+const bankTemplate = bank => `<div class="item-bank">
+${bank.map(item => itemTemplate(item)).join('')}
+</div>`;
+
+const stateTemplate = state => `${state.groups.map(group => groupTemplate(group)).join('')}
+<br>
+${bankTemplate(state.bank)}`;
+
+document.querySelector(".all").innerHTML = stateTemplate(state);
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
