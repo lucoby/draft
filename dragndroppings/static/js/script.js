@@ -38,7 +38,7 @@ document.querySelectorAll(".group-title").forEach(function (item) {
 })
 
 document.querySelectorAll(".group-items").forEach(function (item) {
-    item.classList.add("w-100", "flex-row", "flex-wrap", "border");
+    item.classList.add("d-flex", "w-100", "flex-row", "flex-wrap", "border");
 })
 
 document.querySelectorAll(".item-bank").forEach(function (item) {
