@@ -17,7 +17,12 @@ function drop(ev) {
     target.appendChild(document.getElementById(data));
 }
 
-document.querySelectorAll(".list, .bank").forEach(function (listItem) {
-    listItem.setAttribute("ondrop", "drop(event)");
-    listItem.setAttribute("ondragover", "allowDrop(event)");
+document.querySelectorAll(".list, .bank").forEach(function (list) {
+    list.setAttribute("ondrop", "drop(event)");
+    list.setAttribute("ondragover", "allowDrop(event)");
+})
+
+document.querySelectorAll(".item").forEach(function (item) {
+    item.setAttribute("draggable", "true");
+    item.setAttribute("ondragstart", "drag(event)");
 })
