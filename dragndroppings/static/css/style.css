@@ -24,7 +24,11 @@ img {
     max-height: 150px;
 }
 
-h1, h2 {
+.group-text {
+    font-size: large;
+}
+
+.group-text, .item-text {
     overflow: hidden;
     text-overflow: ellipsis;
     padding-bottom: .25rem;
