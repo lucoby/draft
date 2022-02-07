@@ -15,24 +15,32 @@ let state = {
     },
     "bank": {
         "Pak": {
-
+            "esol_students": 5
         },
         "Evins": {
-
+            "esol_students": 3
         },
         "Mueller": {
-
+            "esol_students": 1
         },
     }
 };
 
 const itemTemplate = item => `<div id="${item[0]}" class="item">
-<div class="item-text">${item[0]}</div>
+<div class="item-text">
+${item[0]}
+<br>
+esol_stents: ${item[1].esol_students}
+</div>
 </div>`;
 
 const groupTemplate = group => `<div class="group">
 <div class="group-title">
-    <div class="group-title-name">${group[0]}</div>
+<div class="group-title-name">
+${group[0]}
+<br>
+sum(esol_students): ${Object.entries(group[1].items).map(item => item[1].esol_students).reduce((a, b) => a + b, 0)}
+</div>
 </div>
 <div id=${group[0]} class="group-items">${Object.entries(group[1].items).map(item => itemTemplate(item)).join('')}</div>
 </div>`;
@@ -65,7 +73,11 @@ function render() {
     });
 
     document.querySelectorAll(".group-title").forEach(function (item) {
-        item.classList.add("d-flex", "w-25", "p-2", "border", "justify-content-center", "align-items-center");
+        item.classList.add("w-25", "p-2", "border", "justify-content-center", "align-items-center");
+    });
+
+    document.querySelectorAll(".group-title-name").forEach(function (item) {
+        item.classList.add("text-center");
     });
 
     document.querySelectorAll(".group-items").forEach(function (item) {
@@ -77,7 +89,7 @@ function render() {
     });
 
     document.querySelectorAll(".item").forEach(function (item) {
-        item.classList.add("d-flex", "p-2", "border", "justify-content-center", "align-items-center");
+        item.classList.add("d-flex", "p-2", "border", "justify-content-center", "align-items-center", "text-center");
     });
 }
 

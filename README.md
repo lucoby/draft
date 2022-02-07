@@ -2,8 +2,8 @@
 
 ### Todo
 
-- Item attributes
-- Sum
+- ~~Item attributes~~
+- ~~Sum~~
 - Configure agg
 - Add group
 - Bulk add items
