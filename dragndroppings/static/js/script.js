@@ -1,73 +1,116 @@
 let state = {
-    "groups": [
-        {
-            "name": "Yang",
-            "items": []
+    "groups": {
+        "Yang": {
+            "items": {}
         },
-        {
-            "name": "Song",
-            "items": []
+        "Song": {
+            "items": {}
         },
-        {
-            "name": "Simon",
-            "items": []
+        "Simon": {
+            "items": {}
         },
-        {
-            "name": "Loach",
-            "items": []
+        "Loach": {
+            "items": {}
         },
-    ],
-    "bank": [
-        {
-            "name": "Pak"
+    },
+    "bank": {
+        "Pak": {
+
         },
-        {
-            "name": "Evins"
+        "Evins": {
+
         },
-        {
-            "name": "Mueller"
+        "Mueller": {
+
         },
-    ]
+    }
 };
 
-const itemTemplate = item => `<div id="${item.name}" class="item">
-<div class="item-text">${item.name}</div>
+const itemTemplate = item => `<div id="${item[0]}" class="item">
+<div class="item-text">${item[0]}</div>
 </div>`;
 
-const groupTemplate = group => `<div id=${group.name} class="group">
+const groupTemplate = group => `<div class="group">
 <div class="group-title">
-    <div class="group-title-name">${group.name}</div>
+    <div class="group-title-name">${group[0]}</div>
 </div>
-<div class="group-items">${group.items.map(item => itemTemplate(item)).join('')}</div>
+<div id=${group[0]} class="group-items">${Object.entries(group[1].items).map(item => itemTemplate(item)).join('')}</div>
 </div>`;
 
-const bankTemplate = bank => `<div class="item-bank">
-${bank.map(item => itemTemplate(item)).join('')}
+const bankTemplate = bank => `<div id="item-bank" class="item-bank">
+${Object.entries(bank).map(item => itemTemplate(item)).join('')}
 </div>`;
 
-const stateTemplate = state => `${state.groups.map(group => groupTemplate(group)).join('')}
+const stateTemplate = state => `${Object.entries(state.groups).map(group => groupTemplate(group)).join('')}
 <br>
 ${bankTemplate(state.bank)}`;
 
-document.querySelector(".all").innerHTML = stateTemplate(state);
+function render() {
+    document.querySelector(".all").innerHTML = stateTemplate(state);
 
+    // add drag-and-drop attributes
+    document.querySelectorAll(".group-items, .item-bank").forEach(function (list) {
+        list.setAttribute("ondrop", "drop(event)");
+        list.setAttribute("ondragover", "allowDrop(event)");
+    });
+
+    document.querySelectorAll(".item").forEach(function (item) {
+        item.setAttribute("draggable", "true");
+        item.setAttribute("ondragstart", "drag(event)");
+    });
+
+    // add styling classes
+    document.querySelectorAll(".group").forEach(function (item) {
+        item.classList.add("d-flex", "w-100", "flex-row");
+    });
+
+    document.querySelectorAll(".group-title").forEach(function (item) {
+        item.classList.add("d-flex", "w-25", "p-2", "border", "justify-content-center", "align-items-center");
+    });
+
+    document.querySelectorAll(".group-items").forEach(function (item) {
+        item.classList.add("d-flex", "w-100", "flex-row", "flex-wrap", "border");
+    });
+
+    document.querySelectorAll(".item-bank").forEach(function (item) {
+        item.classList.add("d-flex", "w-100", "flex-row", "flex-wrap");
+    });
+
+    document.querySelectorAll(".item").forEach(function (item) {
+        item.classList.add("d-flex", "p-2", "border", "justify-content-center", "align-items-center");
+    });
+}
+
+render();
+
+// drag-and-drop functions
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("source", ev.target.parentElement.id);
+    ev.dataTransfer.setData("item", ev.target.id);
 }
 
 function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
+    var source_id = ev.dataTransfer.getData("source");
+    var source = source_id === "item-bank" ? state.bank : state.groups[source_id].items;
+
+    var item_name = ev.dataTransfer.getData("item");
+
 
     var target = ev.target;
     while (!target.hasAttribute("ondrop")) {
         target = target.parentElement;
     }
-    target.appendChild(document.getElementById(data));
+
+    target = target.id === "item-bank" ? state.bank : state.groups[target.id].items;
+    target[item_name] = source[item_name];
+    delete source[item_name];
+
+    render();
 }
 
 // add drag-and-drop attributes
