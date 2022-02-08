@@ -4,8 +4,9 @@
 
 - ~~Item attributes~~
 - ~~Sum~~
-- Configure agg
-- Add group
+- ~~Add group~~
+- Configure attrs
 - Bulk add items
-- Edit group
 - Edit item
+- Edit group
+- Configure agg

@@ -118,9 +118,35 @@ function drop(ev) {
         target = target.parentElement;
     }
 
+    if (source_id === target.id) {
+        return;
+    }
+
     target = target.id === "item-bank" ? state.bank : state.groups[target.id].items;
     target[item_name] = source[item_name];
     delete source[item_name];
 
     render();
+}
+
+// modals
+document.getElementById('config-group').addEventListener('show.bs.modal', function (e) {
+    document.getElementById('config-group-text').value = Object.keys(state.groups).join("\r\n");
+})
+
+function configGroups(e) {
+    const newGroups = new Set(document.getElementById('config-group-text').value.split('\n').filter(e => e))
+    newGroups.forEach(e => {
+        if (!(e in state.groups)) {
+            state.groups[e] = { 'items': {} };
+        }
+    });
+    Object.keys(state.groups).forEach(e => {
+        if (!(newGroups.has(e))) {
+            Object.entries(state.groups[e].items).forEach(e => state.bank[e[0]] = e[1]);
+            delete state.groups[e];
+        }
+    });
+    render();
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('config-group')).hide()
 }
