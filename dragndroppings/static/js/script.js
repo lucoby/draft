@@ -14,6 +14,16 @@ let state = {
         },
     },
     "bank": {
+        "Pak": {},
+        "Evins": {},
+        "Mueller": {}
+    },
+    "attrs": {
+        "esol_students": {
+            "default_value": 0
+        }
+    },
+    "items": {
         "Pak": {
             "esol_students": 5
         },
@@ -23,23 +33,18 @@ let state = {
         "Mueller": {
             "esol_students": 1
         },
-    },
-    "attrs": {
-        "esol_students": {
-            "default_value": 0
-        }
     }
 };
 
-const sum = (items, attr) => Object.entries(items).map(item => item[1][attr]).reduce((a, b) => a + b, 0)
+const sum = (items, attr) => Object.keys(items).map(item => state.items[item][attr]).reduce((a, b) => a + b, 0)
 
 const attrTemplate = (item, attr) => `${attr}: ${item[attr]}`;
 
-const itemTemplate = item => `<div id="${item[0]}" class="item">
+const itemTemplate = item => `<div id="${item}" class="item">
 <div class="item-text">
-${item[0]}
+${item}
 <br>
-${Object.keys(state.attrs).map(attr => attrTemplate(item[1], attr)).join(`<br>`)}
+${Object.keys(state.attrs).map(attr => attrTemplate(state.items[item], attr)).join(`<br>`)}
 </div>
 </div>`;
 
@@ -53,11 +58,11 @@ ${group[0]}
 ${Object.keys(state.attrs).map(attr => aggAttrTemplate(group[1].items, attr)).join(`<br>`)}
 </div>
 </div>
-<div id=${group[0]} class="group-items">${Object.entries(group[1].items).map(item => itemTemplate(item)).join('')}</div>
+<div id=${group[0]} class="group-items">${Object.keys(group[1].items).map(item => itemTemplate(item)).join('')}</div>
 </div>`;
 
 const bankTemplate = bank => `<div id="item-bank" class="item-bank">
-${Object.entries(bank).map(item => itemTemplate(item)).join('')}
+${Object.keys(bank).map(item => itemTemplate(item)).join('')}
 </div>`;
 
 const stateTemplate = state => `${Object.entries(state.groups).map(group => groupTemplate(group)).join('')}
@@ -183,10 +188,6 @@ function addAttrTable(e) {
     addRow(table, "", 0);
 }
 
-function addAttrGroup(group, attr, default_value) {
-    Object.entries(group).forEach(e => e[1][attr] = default_value);
-}
-
 function configAttrs(e) {
     var table = document.getElementById('config-attrs-table');
     for (var i = 1; i < table.rows.length; i++) {
@@ -194,8 +195,7 @@ function configAttrs(e) {
         if (!!attr & !(attr in state.attrs)) {
             var default_value = parseInt(table.rows[i].cells[1].children[0].value);
             state.attrs[attr] = { "default_value": default_value };
-            addAttrGroup(state.bank, attr, default_value);
-            Object.entries(state.groups).forEach(e => addAttrGroup(e[1].items, attr, default_value))
+            Object.entries(state.items).forEach(e => e[1][attr] = default_value);
         }
     }
     render();
