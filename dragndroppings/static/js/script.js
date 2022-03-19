@@ -167,25 +167,33 @@ function configGroups(e) {
     bootstrap.Modal.getOrCreateInstance(document.getElementById('config-group')).hide()
 }
 
-function addRow(table, attr, default_value) {
+function addAttrRow(table, attr, default_value) {
     var row = table.insertRow();
     row.insertCell().innerHTML = `<input type="text" class="form-control" value=${attr}>`;
     row.insertCell().innerHTML = `<input type="text" class="form-control" value=${default_value}>`;
 }
 
-document.getElementById('config-attrs').addEventListener('show.bs.modal', function (e) {
-    var table = document.getElementById('config-attrs-table');
-    for (var i = table.rows.length - 1; i > 0; i--) {
+function deleteRows(table, all = false) {
+    endIndex = 1
+    if (all) {
+        endIndex = 0
+    }
+    for (var i = table.rows.length - 1; i >= endIndex; i--) {
         table.deleteRow(i);
     }
+}
+
+document.getElementById('config-attrs').addEventListener('show.bs.modal', function (e) {
+    var table = document.getElementById('config-attrs-table');
+    deleteRows(table);
     Object.entries(state.attrs).forEach(a => {
-        addRow(table, a[0], a[1].default_value);
+        addAttrRow(table, a[0], a[1].default_value);
     });
 })
 
 function addAttrTable(e) {
     var table = document.getElementById('config-attrs-table');
-    addRow(table, "", 0);
+    addAttrRow(table, "", 0);
 }
 
 function configAttrs(e) {
@@ -202,8 +210,25 @@ function configAttrs(e) {
     bootstrap.Modal.getOrCreateInstance(document.getElementById('config-attrs')).hide()
 }
 
-document.getElementById('config-items').addEventListener('show.bs.modal', function (e) {
+function addItemHeader(table) {
+    var row = table.insertRow();
+    row.insertCell().outerHTML = `<th>Item</th>`;
+    Object.keys(state.attrs).map(attr => row.insertCell().outerHTML = `<th>${attr}</th>`);
+}
 
+function addItemRow(table, item) {
+    var row = table.insertRow();
+    row.insertCell().innerHTML = `<input type="text" class="form-control" value=${item[0]}>`;
+    Object.entries(item[1]).map(attr => row.insertCell().innerHTML = `<input type="text" class="form-control" value=${attr[1]}>`);
+}
+
+document.getElementById('config-items').addEventListener('show.bs.modal', function (e) {
+    var table = document.getElementById('config-items-table');
+    deleteRows(table, true);
+    addItemHeader(table);
+    Object.entries(state.items).forEach(item => {
+        addItemRow(table, item);
+    })
 })
 
 function addItemTable(e) {
