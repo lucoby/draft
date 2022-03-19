@@ -6,7 +6,8 @@
 - ~~Sum~~
 - ~~Add group~~
 - Configure attrs
-- Bulk add items
-- Edit item
+- Edit items
+- Delete item
+- Delete attrs
 - Edit group
 - Configure agg

@@ -201,3 +201,14 @@ function configAttrs(e) {
     render();
     bootstrap.Modal.getOrCreateInstance(document.getElementById('config-attrs')).hide()
 }
+
+document.getElementById('config-items').addEventListener('show.bs.modal', function (e) {
+
+})
+
+function addItemTable(e) {
+}
+
+function configItems(e) {
+
+}
