@@ -31,11 +31,13 @@ let state = {
     }
 };
 
+const attrTemplate = (item, attr) => `${attr}: ${item[attr]}`;
+
 const itemTemplate = item => `<div id="${item[0]}" class="item">
 <div class="item-text">
 ${item[0]}
 <br>
-esol_students: ${item[1].esol_students}
+${Object.keys(state.attrs).map(attr => attrTemplate(item[1], attr)).join(`<br>`)}
 </div>
 </div>`;
 
@@ -185,7 +187,7 @@ function configAttrs(e) {
     var table = document.getElementById('config-attrs-table');
     for (var i = 1; i < table.rows.length; i++) {
         var attr = table.rows[i].cells[0].children[0].value;
-        if (attr & !(attr in state.attrs)) {
+        if (!!attr & !(attr in state.attrs)) {
             var default_value = parseInt(table.rows[i].cells[1].children[0].value);
             state.attrs[attr] = { "default_value": default_value };
             addAttrGroup(state.bank, attr, default_value);
