@@ -232,6 +232,10 @@ document.getElementById('config-items').addEventListener('show.bs.modal', functi
 })
 
 function addItemTable(e) {
+    var table = document.getElementById('config-items-table');
+    var newItem = ["", {}];
+    Object.entries(state.attrs).map(attr => newItem[1][attr[0]] = attr[1]["default_value"])
+    addItemRow(table, newItem);
 }
 
 function configItems(e) {
