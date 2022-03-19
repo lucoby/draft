@@ -31,6 +31,8 @@ let state = {
     }
 };
 
+const sum = (items, attr) => Object.entries(items).map(item => item[1][attr]).reduce((a, b) => a + b, 0)
+
 const attrTemplate = (item, attr) => `${attr}: ${item[attr]}`;
 
 const itemTemplate = item => `<div id="${item[0]}" class="item">
@@ -41,12 +43,14 @@ ${Object.keys(state.attrs).map(attr => attrTemplate(item[1], attr)).join(`<br>`)
 </div>
 </div>`;
 
+const aggAttrTemplate = (items, attr) => `sum(${attr}): ${sum(items, attr)}`
+
 const groupTemplate = group => `<div class="group">
 <div class="group-title">
 <div class="group-title-name">
 ${group[0]}
 <br>
-sum(esol_students): ${Object.entries(group[1].items).map(item => item[1].esol_students).reduce((a, b) => a + b, 0)}
+${Object.keys(state.attrs).map(attr => aggAttrTemplate(group[1].items, attr)).join(`<br>`)}
 </div>
 </div>
 <div id=${group[0]} class="group-items">${Object.entries(group[1].items).map(item => itemTemplate(item)).join('')}</div>
