@@ -23,6 +23,11 @@ let state = {
         "Mueller": {
             "esol_students": 1
         },
+    },
+    "attrs": {
+        "esol_students": {
+            "default_value": 0
+        }
     }
 };
 
@@ -30,7 +35,7 @@ const itemTemplate = item => `<div id="${item[0]}" class="item">
 <div class="item-text">
 ${item[0]}
 <br>
-esol_stents: ${item[1].esol_students}
+esol_students: ${item[1].esol_students}
 </div>
 </div>`;
 
@@ -135,18 +140,58 @@ document.getElementById('config-group').addEventListener('show.bs.modal', functi
 })
 
 function configGroups(e) {
-    const newGroups = new Set(document.getElementById('config-group-text').value.split('\n').filter(e => e))
-    newGroups.forEach(e => {
+    const new_groups = new Set(document.getElementById('config-group-text').value.split('\n').filter(e => e))
+    new_groups.forEach(e => {
         if (!(e in state.groups)) {
             state.groups[e] = { 'items': {} };
         }
     });
     Object.keys(state.groups).forEach(e => {
-        if (!(newGroups.has(e))) {
+        if (!(new_groups.has(e))) {
             Object.entries(state.groups[e].items).forEach(e => state.bank[e[0]] = e[1]);
             delete state.groups[e];
         }
     });
     render();
     bootstrap.Modal.getOrCreateInstance(document.getElementById('config-group')).hide()
+}
+
+function addRow(table, attr, default_value) {
+    var row = table.insertRow();
+    row.insertCell().innerHTML = `<input type="text" class="form-control" value=${attr}>`;
+    row.insertCell().innerHTML = `<input type="text" class="form-control" value=${default_value}>`;
+}
+
+document.getElementById('config-attrs').addEventListener('show.bs.modal', function (e) {
+    var table = document.getElementById('config-attrs-table');
+    for (var i = table.rows.length - 1; i > 0; i--) {
+        table.deleteRow(i);
+    }
+    Object.entries(state.attrs).forEach(a => {
+        addRow(table, a[0], a[1].default_value);
+    });
+})
+
+function addAttrTable(e) {
+    var table = document.getElementById('config-attrs-table');
+    addRow(table, "", 0);
+}
+
+function addAttrGroup(group, attr, default_value) {
+    Object.entries(group).forEach(e => e[1][attr] = default_value);
+}
+
+function configAttrs(e) {
+    var table = document.getElementById('config-attrs-table');
+    for (var i = 1; i < table.rows.length; i++) {
+        var attr = table.rows[i].cells[0].children[0].value;
+        if (attr & !(attr in state.attrs)) {
+            var default_value = parseInt(table.rows[i].cells[1].children[0].value);
+            state.attrs[attr] = { "default_value": default_value };
+            addAttrGroup(state.bank, attr, default_value);
+            Object.entries(state.groups).forEach(e => addAttrGroup(e[1].items, attr, default_value))
+        }
+    }
+    render();
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('config-attrs')).hide()
 }
