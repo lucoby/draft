@@ -5,8 +5,8 @@
 - ~~Item attributes~~
 - ~~Sum~~
 - ~~Add group~~
-- Configure attrs
-- Edit items
+- ~~Configure attrs~~
+- ~~Edit items~~
 - Delete item
 - Delete attrs
 - Edit group

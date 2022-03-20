@@ -170,7 +170,7 @@ function configGroups(e) {
 function addAttrRow(table, attr, default_value) {
     var row = table.insertRow();
     row.insertCell().innerHTML = `<input type="text" class="form-control" value=${attr}>`;
-    row.insertCell().innerHTML = `<input type="text" class="form-control" value=${default_value}>`;
+    row.insertCell().innerHTML = `<input type="number" class="form-control" value=${default_value}>`;
 }
 
 function deleteRows(table, all = false) {
@@ -207,7 +207,7 @@ function configAttrs(e) {
         }
     }
     render();
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('config-attrs')).hide()
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('config-attrs')).hide();
 }
 
 function addItemHeader(table) {
@@ -219,7 +219,7 @@ function addItemHeader(table) {
 function addItemRow(table, item) {
     var row = table.insertRow();
     row.insertCell().innerHTML = `<input type="text" class="form-control" value=${item[0]}>`;
-    Object.entries(item[1]).map(attr => row.insertCell().innerHTML = `<input type="text" class="form-control" value=${attr[1]}>`);
+    Object.entries(item[1]).map(attr => row.insertCell().innerHTML = `<input type="number" class="form-control" attr=${attr[0]} value=${attr[1]}>`);
 }
 
 document.getElementById('config-items').addEventListener('show.bs.modal', function (e) {
@@ -238,6 +238,43 @@ function addItemTable(e) {
     addItemRow(table, newItem);
 }
 
-function configItems(e) {
-
+function addItemAlert(message) {
+    var alertPlaceholder = document.getElementById('config-item-alert-placeholder');
+    var alertDiv = document.createElement('div');
+    alertDiv.classList.add('alert', 'alert-danger', 'd-flex', 'align-items-center', 'alert-dismissible', 'show', 'fade');
+    alertDiv.setAttribute('role', 'danger');
+    alertDiv.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <div>
+        ${message}
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    alertPlaceholder.appendChild(alertDiv);
 }
+
+function configItems(e) {
+    var table = document.getElementById('config-items-table');
+    var itemValidations = false;
+    for (var i = 1; i < table.rows.length; i++) {
+        var item = table.rows[i].cells[0].children[0].value;
+        if (!item) {
+
+        } else if (item in state.items) {
+            for (var j = 1; j < table.rows[i].cells.length; j++) {
+                var field = table.rows[i].cells[j].children[0];
+                var attr_value = parseInt(field.value);
+                state.items[item][field.getAttribute("attr")] = attr_value;
+            }
+        } else {
+            state.items[item] = {}
+            for (var j = 1; j < table.rows[i].cells.length; j++) {
+                var field = table.rows[i].cells[j].children[0];
+                var attr_value = parseInt(field.value);
+                state.items[item][field.getAttribute("attr")] = attr_value;
+            }
+            state.bank[item] = { item: {} }
+        }
+    }
+
+    render();
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('config-items')).hide();
+};
