@@ -14,9 +14,6 @@ let state = {
         },
     },
     "bank": {
-        "Pak": {},
-        "Evins": {},
-        "Mueller": {}
     },
     "attrs": {
         "esol_students": {
@@ -24,15 +21,6 @@ let state = {
         }
     },
     "items": {
-        "Pak": {
-            "esol_students": 5
-        },
-        "Evins": {
-            "esol_students": 3
-        },
-        "Mueller": {
-            "esol_students": 1
-        },
     }
 };
 
